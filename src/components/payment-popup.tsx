@@ -25,7 +25,7 @@ export default function PaymentPopup(props: {refresh?: () => void; popupHandler:
     const component = useComponent();
 
     const getPaymentInfo = useCallback(async (payment_id: number) => {
-        return await axios.get(`${process.env.API_URL}/admin/fees/warga?payment_id=${payment_id}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees/warga?payment_id=${payment_id}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[] };
@@ -41,7 +41,7 @@ export default function PaymentPopup(props: {refresh?: () => void; popupHandler:
         return await axios.patch(`${process.env.API_URL}/admin/fees/warga?payment_id=${payment_id}`, {
             payment_status,
             payment_description,
-        })
+        }, { withCredentials: true })
         .then((res: AxiosResponse) => {
             if(res.status === 200){
                 if(props.refresh) props.refresh();

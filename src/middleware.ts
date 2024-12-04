@@ -44,46 +44,10 @@ export async function middleware(req: NextRequest){
             }
         }
     }
-    
-    if(pathname.startsWith('/api/v1/admin/auth')) return NextResponse.next();
-
-    if (pathname.startsWith('/api/v1/admin')){
-        // fetch the token from the server
-        try {
-            const admin_id = await axios.post(`${process.env.API_URL}/admin/auth`, {
-                token: cookie_token
-            });
-            const { data } = admin_id.data as { data: number };
-    
-            if(pathname.startsWith('/api/v1/admin') && (data === 0 || data === undefined)){    
-                // If the token is not found, redirect to the signin page
-                return NextResponse.json({
-                    message: 'token tidak valid',
-                }, {
-                    status: 401
-                })
-            }
-            
-            const response = NextResponse.next()
-
-            response.cookies.set('admin_id', data.toString());
-            return response;
-        } catch (error) {
-            if(pathname.startsWith('/api/v1/admin')){    
-                // If the token is not found, redirect to the signin page
-                return NextResponse.json({
-                    message: 'token tidak valid',
-                }, {
-                    status: 401
-                })
-            }
-        }
-    }
 }
 
 export const config = {
     matcher: [
         '/cgm-admin/:path*',
-        '/api/:path*'
     ]
 }

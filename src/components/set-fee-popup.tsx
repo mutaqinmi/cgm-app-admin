@@ -8,9 +8,9 @@ import OutlinedButton from './outlined-button';
 
 export default function SetFeePopup(props: {refresh?: () => void; popupHandler: (show: boolean) => void}){
     const setNewFee = useCallback(async (amount: number) => {
-        return await axios.post(`${process.env.API_URL}/admin/fees`, { amount })
+        return await axios.post(`${process.env.API_URL}/admin/fees`, { amount }, { withCredentials: true })
             .then((res: AxiosResponse) => {
-                if(res.status === 201){
+                if(res.status === 200){
                     if(props.refresh) props.refresh();
                     props.popupHandler(false);
                 }

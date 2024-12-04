@@ -42,6 +42,7 @@ export default function Page(){
             phone,
             password
         }, {
+            withCredentials: true,
             headers: {
                 "Content-Type": "application/json",
             }
@@ -50,10 +51,10 @@ export default function Page(){
                 const { user, admin_id } = response.data?.data as { user: string; admin_id: number };
                 localStorage.setItem("user", user);
                 localStorage.setItem("admin_id", admin_id.toString());
+
                 route.push("/cgm-admin/dashboard");
             }
         }).catch((error: AxiosError) => {
-            console.log(error.response?.data);
             const {message} = error.response?.data as {message: string};
             setError(message);
         }).finally(() => setIsLoading(false));

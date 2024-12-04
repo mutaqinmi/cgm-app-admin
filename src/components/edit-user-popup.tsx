@@ -7,7 +7,7 @@ import OutlinedButton from "./outlined-button";
 
 export default function EditUserPopup(props: {refresh?: () => void; popupHandler: (value: boolean) => void; data: {user_id: number, name: string, phone: string, address: string, rt: string}}) {
     const updateUser = useCallback(async (user_id: number, name: string, phone: string, address: string, rt: string) => {
-        return await axios.patch(`${process.env.API_URL}/admin/users?user_id=${user_id}`, { name, phone, address, rt })
+        return await axios.patch(`${process.env.API_URL}/admin/users?user_id=${user_id}`, { name, phone, address, rt }, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     if(props.refresh) props.refresh();

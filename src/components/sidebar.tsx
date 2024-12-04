@@ -13,7 +13,7 @@ export default function SideBar(props: {className?: string; sidebarState: boolea
         const confirmDialog = confirm("Apakah anda yakin ingin keluar?");
         if(!confirmDialog) return;
 
-        return await axios.get(`${process.env.API_URL}/admin/auth/signout`)
+        return await axios.get(`${process.env.API_URL}/admin/auth/signout`, { withCredentials: true })
             .then(res => {
                 if(res.status === 200){
                     localStorage.clear();

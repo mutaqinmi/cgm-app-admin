@@ -51,7 +51,7 @@ export default function Tentang(){
     }
 
     const getAdminData = useCallback(async (admin_id: number) => {
-        return await axios.get(`${process.env.API_URL}/admin?admin_id=${admin_id}`)
+        return await axios.get(`${process.env.API_URL}/admin?admin_id=${admin_id}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: schema.administratorsType[] };
@@ -64,7 +64,7 @@ export default function Tentang(){
     }, []);
 
     const updateAdminPhone = useCallback(async (admin_id: number, phone: string) => {
-        return await axios.patch(`${process.env.API_URL}/admin?edit=phone`, { admin_id, phone })
+        return await axios.patch(`${process.env.API_URL}/admin?edit=phone`, { admin_id, phone }, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     refresh();
@@ -77,7 +77,7 @@ export default function Tentang(){
     }, [refresh]);
 
     const updateAdminPassword = useCallback(async (admin_id: number, old_password: string, new_password: string) => {
-        return await axios.patch(`${process.env.API_URL}/admin?edit=password`, { admin_id, old_password, new_password })
+        return await axios.patch(`${process.env.API_URL}/admin?edit=password`, { admin_id, old_password, new_password }, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     refresh();

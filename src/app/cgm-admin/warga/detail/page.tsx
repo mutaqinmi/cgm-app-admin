@@ -77,7 +77,7 @@ function DetailWarga(){
     const getUserData = useCallback(async (user_id: number) => {
         setIsLoading(true);
 
-        return await axios.get(`${process.env.API_URL}/admin/users?user_id=${user_id}`)
+        return await axios.get(`${process.env.API_URL}/admin/users?user_id=${user_id}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, user_id: number, name: string, address: string, phone: string, rt: string}[] };
@@ -94,7 +94,7 @@ function DetailWarga(){
     const getUndonePaymentsFilteredData = useCallback(async (user_id: number) => {
         setIsLoading(true);
 
-        return await axios.get(`${process.env.API_URL}/admin/users?user_id=${user_id}&filtered=true`)
+        return await axios.get(`${process.env.API_URL}/admin/users?user_id=${user_id}&filtered=true`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, user_id: number, name: string, address: string, phone: string, rt: string}[] };
@@ -110,7 +110,7 @@ function DetailWarga(){
     const getStatusFilteredData = useCallback(async (user_id: number, status: string) => {
         setIsLoading(true);
 
-        return await axios.get(`${process.env.API_URL}/admin/users?user_id=${user_id}&status=${status}`)
+        return await axios.get(`${process.env.API_URL}/admin/users?user_id=${user_id}&status=${status}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, user_id: number, name: string, address: string, phone: string, rt: string}[] };
@@ -129,9 +129,9 @@ function DetailWarga(){
         return await axios.post(`${process.env.API_URL}/admin/fees?multiple=true`, {
             user_id,
             date: monthList
-        })
+        }, { withCredentials: true })
         .then((res: AxiosResponse) => {
-            if(res.status === 201){
+            if(res.status === 200){
                 resetDate();
                 refresh();
             }
@@ -143,7 +143,7 @@ function DetailWarga(){
     }, []);
 
     const deleteUser = useCallback(async (user_id: number) => {
-        return await axios.delete(`${process.env.API_URL}/admin/users?user_id=${user_id}`)
+        return await axios.delete(`${process.env.API_URL}/admin/users?user_id=${user_id}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     return route.push('/cgm-admin/warga');

@@ -52,7 +52,7 @@ export default function Page() {
     const getAllUsers = useCallback(async (pagination: number) => { 
         setIsLoading(true);
 
-        return await axios.get(`${process.env.API_URL}/admin/users?page=${pagination}`)
+        return await axios.get(`${process.env.API_URL}/admin/users?page=${pagination}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data, count } = res.data as { data: schema.usersType[], count: number };
@@ -68,7 +68,7 @@ export default function Page() {
     }, [])
 
     const searchUser = useCallback(async (keyword: string) => {        
-        return await axios.get(`${process.env.API_URL}/admin/users?search=${keyword}`)
+        return await axios.get(`${process.env.API_URL}/admin/users?search=${keyword}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: schema.usersType[] };

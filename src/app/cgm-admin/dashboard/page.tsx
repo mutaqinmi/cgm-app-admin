@@ -101,7 +101,7 @@ export default function Page() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const getCurrentMonthFee = useCallback(async (fee_id: number) => {
-        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[] };
@@ -120,7 +120,7 @@ export default function Page() {
         const currentMonth = new Date().getMonth() + 1;
         const currentYear = new Date().getFullYear();
 
-        return await axios.get(`${process.env.API_URL}/admin/fees?month=${currentMonth}&year=${currentYear}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?month=${currentMonth}&year=${currentYear}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: schema.feesType[] };
@@ -141,7 +141,7 @@ export default function Page() {
     const getAllUsers = useCallback(async (pagination: number) => {     
         setIsLoading(true);
         
-        return await axios.get(`${process.env.API_URL}/admin/users?page=${pagination}`)
+        return await axios.get(`${process.env.API_URL}/admin/users?page=${pagination}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data, count } = res.data as { data: schema.usersType[], count: number };
@@ -157,7 +157,7 @@ export default function Page() {
     }, [])
 
     const searchUser = useCallback(async (keyword: string) => {        
-        return await axios.get(`${process.env.API_URL}/admin/users?search=${keyword}`)
+        return await axios.get(`${process.env.API_URL}/admin/users?search=${keyword}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: schema.usersType[] };
@@ -173,7 +173,7 @@ export default function Page() {
     const getAllFees = useCallback(async (pagination: number) => {  
         setIsLoading(true);
         
-        return await axios.get(`${process.env.API_URL}/admin/fees?page=${pagination}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?page=${pagination}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data, count } = res.data as { data: schema.feesType[], count: number };
@@ -191,7 +191,7 @@ export default function Page() {
     const getFeeByMonth = useCallback(async (month: string, year: string) => {        
         if(month === '' || year === '') return getAllFees(component.feeListPagination);
         
-        return await axios.get(`${process.env.API_URL}/admin/fees?month=${month}&year=${year}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?month=${month}&year=${year}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: schema.feesType[] };
@@ -207,7 +207,7 @@ export default function Page() {
     const getActivityHistory = useCallback(async (pagination: number) => {
         setIsLoading(true);
 
-        return await axios.get(`${process.env.API_URL}/admin/fees/history?page=${pagination}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees/history?page=${pagination}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data, count } = res.data as { data: {payments: schema.paymentsType, users: schema.usersType}[], count: number };
@@ -225,7 +225,7 @@ export default function Page() {
     const getChartData = useCallback(async () => {
         setIsLoading(true);
 
-        return await axios.get(`${process.env.API_URL}/admin/fees?chart_data=true`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?chart_data=true`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: { month: string, done: number, undone: number }[] };

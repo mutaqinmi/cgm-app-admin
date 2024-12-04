@@ -103,7 +103,7 @@ function Iuran() {
     const getCurrentMonthFee = useCallback(async (fee_id: number, pagination: number) => {
         setIsLoading(true);
 
-        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}&page=${pagination}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}&page=${pagination}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data, users } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[], users: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[] };
@@ -124,7 +124,7 @@ function Iuran() {
 
         setIsLoading(true);
 
-        return await axios.get(`${process.env.API_URL}/admin/fees?month=${currentMonth}&year=${currentYear}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?month=${currentMonth}&year=${currentYear}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: schema.feesType[] };
@@ -147,7 +147,7 @@ function Iuran() {
 
         setIsLoading(true);
 
-        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}&filter=${filter}&page=${pagination}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}&filter=${filter}&page=${pagination}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data, users } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[], users: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[] };
@@ -165,7 +165,7 @@ function Iuran() {
     const getStatusFilteredCurrentMonthFee = useCallback(async (fee_id: number, status: string, pagination: number) => {
         setIsLoading(true);
 
-        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}&status=${status}&page=${pagination}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}&status=${status}&page=${pagination}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { users } = res.data as { users: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[] };
@@ -182,7 +182,7 @@ function Iuran() {
     const getFilteredCurrentMonthFee = useCallback(async (fee_id: number, filter: string, status: string, pagination: number) => {
         setIsLoading(true);
 
-        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}&filter=${filter}&status=${status}&page=${pagination}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}&filter=${filter}&status=${status}&page=${pagination}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[] };
@@ -199,7 +199,7 @@ function Iuran() {
     const getAllFees = useCallback(async (pagination: number) => {    
         setIsLoading(true);
 
-        return await axios.get(`${process.env.API_URL}/admin/fees?page=${pagination}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?page=${pagination}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data, count } = res.data as { data: schema.feesType[], count: number };
@@ -217,7 +217,7 @@ function Iuran() {
     const getFeeByMonth = useCallback(async (month: string, year: string) => {        
         if(month === '' || year === '') return getAllFees(component.feeListPagination);
         
-        return await axios.get(`${process.env.API_URL}/admin/fees?month=${month}&year=${year}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?month=${month}&year=${year}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: schema.feesType[] };
@@ -233,7 +233,7 @@ function Iuran() {
     const getActivityHistory = useCallback(async (pagination: number) => {
         setIsLoading(true);
 
-        return await axios.get(`${process.env.API_URL}/admin/fees/history?page=${pagination}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees/history?page=${pagination}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data, count } = res.data as { data: {payments: schema.paymentsType, users: schema.usersType}[], count: number };
@@ -249,7 +249,7 @@ function Iuran() {
     }, [])
 
     const searchUser = useCallback(async (fee_id: number, keyword: string) => {
-        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}&search=${keyword}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}&search=${keyword}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[] };
@@ -263,7 +263,7 @@ function Iuran() {
     }, [])
 
     const searchUserWithRT = useCallback(async (fee_id: number, filter: string, keyword: string) => {
-        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}&filter=${filter}&search=${keyword}`)
+        return await axios.get(`${process.env.API_URL}/admin/fees?fee_id=${fee_id}&filter=${filter}&search=${keyword}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { data } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[] };

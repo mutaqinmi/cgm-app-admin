@@ -7,7 +7,7 @@ export default function WhatsAppShortcut(){
     const route = useRouter();
     const [phone, setPhone] = useState<string>("");
     const getAdministratorPhone = useCallback(async () => {
-        return await axios.get(`${process.env.API_URL}/general?get=whatsapp`)
+        return await axios.get(`${process.env.API_URL}/general?get=whatsapp`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
                     const { phone } = res.data as { phone: string };

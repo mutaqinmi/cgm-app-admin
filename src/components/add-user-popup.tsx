@@ -7,9 +7,9 @@ import OutlinedButton from "./outlined-button";
 
 export default function AddUserPopup(props: {refresh?: () => void; popupHandler: (value: boolean) => void}) {
     const createNewUser = useCallback(async (name: string, phone: string, address: string, rt: string) => {
-        return await axios.post(`${process.env.API_URL}/admin/users`, { name, phone, address, rt })
+        return await axios.post(`${process.env.API_URL}/admin/users`, { name, phone, address, rt }, { withCredentials: true })
             .then((res: AxiosResponse) => {
-                if(res.status === 201){
+                if(res.status === 200){
                     if(props.refresh) props.refresh();
                     props.popupHandler(false);
                 }
