@@ -36,15 +36,15 @@ export default function SideBar(props: {className?: string; sidebarState: boolea
             </div>
             <div className="mt-4 p-4">
                 <ul>
-                    <SideBarMenu icon={<ChartBar size={24}/>} label="Dashboard" active={props.navbarState === 0} onClick={() => {route.push('/cgm-admin/dashboard'); props.sidebarController(false)}}/>
-                    <SideBarMenu icon={<HandCoins size={24}/>} label="Iuran" active={props.navbarState === 1} onClick={() => {route.push('/cgm-admin/iuran'); props.sidebarController(false)}}/>
-                    <SideBarMenu icon={<Users size={24}/>} label="Warga" active={props.navbarState === 2} onClick={() => {route.push('/cgm-admin/warga'); props.sidebarController(false)}}/>
+                    <SideBarMenu icon={<ChartBar size={24}/>} label="Dashboard" active={props.navbarState === 0} onClick={() => {route.push('/dashboard'); props.sidebarController(false)}}/>
+                    <SideBarMenu icon={<HandCoins size={24}/>} label="Iuran" active={props.navbarState === 1} onClick={() => {route.push('/iuran'); props.sidebarController(false)}}/>
+                    <SideBarMenu icon={<Users size={24}/>} label="Warga" active={props.navbarState === 2} onClick={() => {route.push('/warga'); props.sidebarController(false)}}/>
                 </ul>
             </div>
         </div>
         <div className="p-4">
             <ul>
-                <SideBarMenu icon={<Gear size={24}/>} label="Pengaturan" active={props.navbarState === 3} onClick={() => {route.push('/cgm-admin/settings'); props.sidebarController(false)}}/>
+                <SideBarMenu icon={<Gear size={24}/>} label="Pengaturan" active={props.navbarState === 3} onClick={() => {route.push('/settings'); props.sidebarController(false)}}/>
                 <li>
                     <HorizontalDivider/>
                 </li>

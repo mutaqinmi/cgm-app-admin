@@ -315,7 +315,7 @@ export default function Page() {
                             <TableHead title={['Nama', 'No. Telepon', 'Alamat', 'RT']}/>
                             <tbody>
                                 {component.usersList.map((user: schema.usersType) => {
-                                    return <UserListItem key={user.user_id} name={user.name!} phone={user.phone!} address={user.address!} rt={user.rt!} onClick={() => route.push(`/cgm-admin/warga/detail?user_id=${user.user_id!}`)}/>
+                                    return <UserListItem key={user.user_id} name={user.name!} phone={user.phone!} address={user.address!} rt={user.rt!} onClick={() => route.push(`/warga/detail?user_id=${user.user_id!}`)}/>
                                 })}
                             </tbody>
                         </table>
@@ -331,7 +331,7 @@ export default function Page() {
                     </div>
                     <div className="mt-8 flex flex-col gap-4">
                         {component.feeList.length ? component.feeList.map((fee: schema.feesType) => {
-                            return <FeeListItem key={fee.fee_id} month={fee.fee_date!} onClick={() => route.push(`/cgm-admin/iuran?fee_id=${fee.fee_id}`)}/>
+                            return <FeeListItem key={fee.fee_id} month={fee.fee_date!} onClick={() => route.push(`/iuran?fee_id=${fee.fee_id}`)}/>
                         }) : <span className='text-sm italic text-gray-500 text-center'>Rekapan iuran tidak ditemukan.</span>}
                     </div>
                     {component.feeList.length ? <PaginationWidget currentPage={component.feeListPagination} totalPage={Math.ceil(component.feesCount / 10)} onClickNext={() => {if(component.feeListPagination >= Math.ceil(component.feesCount / 10)) return; component.setFeeListPagination(component.feeListPagination + 1); feeListPaginationHandler(component.feeListPagination + 1)}} onClickPrev={() => {if(component.feeListPagination <= 1) return; component.setFeeListPagination(component.feeListPagination - 1); feeListPaginationHandler(component.feeListPagination - 1)}}/> : null}

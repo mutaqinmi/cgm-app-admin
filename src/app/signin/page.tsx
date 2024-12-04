@@ -52,7 +52,7 @@ export default function Page(){
                 localStorage.setItem("user", user);
                 localStorage.setItem("admin_id", admin_id.toString());
 
-                route.push("/cgm-admin/dashboard");
+                route.push("/dashboard");
             }
         }).catch((error: AxiosError) => {
             const {message} = error.response?.data as {message: string};

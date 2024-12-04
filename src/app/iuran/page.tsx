@@ -422,7 +422,7 @@ function Iuran() {
                         </div>
                         <div className="mt-8 flex flex-col gap-4">
                             {component.feeList.map((fee: schema.feesType) => {
-                                return <FeeListItem key={fee.fee_id} month={fee.fee_date!} onClick={() => route.push(`/cgm-admin/iuran?fee_id=${fee.fee_id}`)}/>
+                                return <FeeListItem key={fee.fee_id} month={fee.fee_date!} onClick={() => route.push(`/iuran?fee_id=${fee.fee_id}`)}/>
                             })}
                         </div>
                         <PaginationWidget currentPage={component.feeListPagination} totalPage={Math.ceil(component.feesCount / 10)} onClickNext={() => {if(component.feeListPagination >= Math.ceil(component.feesCount / 10)) return; component.setFeeListPagination(component.feeListPagination + 1); feeListPaginationHandler(component.feeListPagination + 1)}} onClickPrev={() => {if(component.feeListPagination <= 1) return; component.setFeeListPagination(component.feeListPagination - 1); feeListPaginationHandler(component.feeListPagination - 1)}}/>

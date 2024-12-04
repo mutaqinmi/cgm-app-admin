@@ -108,7 +108,7 @@ export default function Page() {
                         <TableHead title={['Nama', 'No. Telepon', 'Alamat', 'RT']}/>
                         <tbody>
                             {component.usersList.map((user) => {
-                                return <UserListItem key={user.user_id} name={user.name!} phone={user.phone!} address={user.address!} rt={user.rt!} onClick={() => route.push(`/cgm-admin/warga/detail?user_id=${user.user_id}`)}/>
+                                return <UserListItem key={user.user_id} name={user.name!} phone={user.phone!} address={user.address!} rt={user.rt!} onClick={() => route.push(`/warga/detail?user_id=${user.user_id}`)}/>
                             })}
                         </tbody>
                     </table>

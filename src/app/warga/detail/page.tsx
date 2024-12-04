@@ -146,7 +146,7 @@ function DetailWarga(){
         return await axios.delete(`${process.env.API_URL}/admin/users?user_id=${user_id}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
                 if(res.status === 200){
-                    return route.push('/cgm-admin/warga');
+                    return route.push('/warga');
                 }
             })
             .catch((error: AxiosError) => {
