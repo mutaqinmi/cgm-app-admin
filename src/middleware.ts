@@ -6,10 +6,10 @@ export async function middleware(req: NextRequest){
     const pathname = req.nextUrl.pathname;
 
     // get the token from the cookie
-    const cookie_token = req.cookies.get('token')?.value;
+    const cookie_admin_token = req.cookies.get('admin_token')?.value;
 
     // check if the token is not found
-    if(!cookie_token){
+    if(!cookie_admin_token){
         // If the token is not found, redirect to the signin page
         if(pathname.startsWith('/signin')) return NextResponse.next();
     }
@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest){
     // fetch the token from the server
     try {
         const response = await axios.post(`${process.env.API_URL}/admin/auth`, {
-            token: cookie_token
+            token: cookie_admin_token
         });
         const { data } = response.data as { data: number };
 

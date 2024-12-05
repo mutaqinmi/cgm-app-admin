@@ -338,8 +338,6 @@ function Iuran() {
         if(filter === 'RT 003') filterContext = '3';
         if(filter === 'RT 004') filterContext = '4';
 
-        if(keyword === '') return filterRTHandler(fee_id, filterContext, component.userListPagination);
-
         if(filter === 'Semua RT') return searchUser(fee_id, keyword);
 
         return searchUserWithRT(fee_id, filterContext, keyword);
