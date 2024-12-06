@@ -226,8 +226,8 @@ function DetailWarga(){
     }, [refresh]);
         
     return isLoading ? <LoadingAnimation/> : component.userData ? <NavigationBar sidebarIndex={2}>
-        <div className="mt-8 grid grid-cols-5 gap-8">
-            <div className="col-span-3 flex flex-col gap-8">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-5 gap-8">
+            <div className="col-span-1 md:col-span-3 flex flex-col gap-8">
                 <Container>
                     <div className="flex gap-4 justify-between">
                         <div className="flex gap-4 items-center">
@@ -274,7 +274,7 @@ function DetailWarga(){
                     </div>
                 </Container>
             </div>
-            <div className="col-span-2 flex flex-col gap-8">
+            <div className="col-span-1 md:col-span-2 flex flex-col gap-8">
                 <Container>
                     <h1 className="font-semibold text-lg">Iuran Belum Lunas</h1>
                     <div className="w-full flex justify-center items-center mt-4 gap-1">
