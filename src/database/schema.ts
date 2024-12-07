@@ -83,12 +83,24 @@ export const payments = pgTable('payments', {
     }
 })
 
-// notification table
-export type notificationsType = typeof notifications.$inferSelect;
-export const notifications = pgTable('notifications', {
+// user notification table
+export type user_notificationsType = typeof user_notifications.$inferSelect;
+export const user_notifications = pgTable('user_notifications', {
     notification_id: serial('notification_id').primaryKey(),
     user_id: serial('user_id').references(() => users.user_id, { onUpdate: 'cascade', onDelete: 'cascade' }),
     notification_title: varchar('notification_title', { length: 50 }),
     notification_content: varchar('notification_content'),
     notification_date: timestamp('notification_date').default(sql`NOW()`),
+    is_read: boolean('is_read').default(false),
+})
+
+// admin notification table
+export type admin_notificationsType = typeof admin_notifications.$inferSelect;
+export const admin_notifications = pgTable('admin_notifications', {
+    notification_id: serial('notification_id').primaryKey(),
+    admin_id: serial('admin_id').references(() => administrators.admin_id, { onUpdate: 'cascade', onDelete: 'cascade' }),
+    notification_title: varchar('notification_title', { length: 50 }),
+    notification_content: varchar('notification_content'),
+    notification_date: timestamp('notification_date').default(sql`NOW()`),
+    is_read: boolean('is_read').default(false),
 })

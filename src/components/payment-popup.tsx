@@ -33,7 +33,8 @@ export default function PaymentPopup(props: {refresh?: () => void; popupHandler:
                 }
             })
             .catch((error: AxiosError) => {
-                console.log(error);
+                const { message } = error.response?.data as { message: string };
+                console.log(message);
             })
     }, [component])
 
@@ -49,11 +50,32 @@ export default function PaymentPopup(props: {refresh?: () => void; popupHandler:
             }
         })
         .catch((error: AxiosError) => {
-            console.log(error);
+            const { message } = error.response?.data as { message: string };
+            console.log(message);
         })
     }, [props])
 
-    const updatePaymentInfoHandler = (payment_id: number, payment_status: boolean, payment_description: string) => updatePaymentInfo(payment_id, payment_status, payment_description);
+    const setUserPaymentNotification = useCallback(async (payment_id: number, notification_title: string, notification_content: string) => {
+        return await axios.post(`${process.env.API_URL}/admin/notification`, {
+            payment_id,
+            notification_title,
+            notification_content,
+        }, { withCredentials: true })
+        .then((res: AxiosResponse) => {
+            if(res.status === 200){
+                return true;
+            }
+        })
+        .catch((error: AxiosError) => {
+            const { message } = error.response?.data as { message: string };
+            console.log(message);
+        })
+    }, [])
+
+    const updatePaymentInfoHandler = (payment_id: number, payment_status: boolean, payment_description: string) => {
+        updatePaymentInfo(payment_id, payment_status, payment_description);
+        if(payment_description === 'done') setUserPaymentNotification(payment_id, 'Pembayaran Dikonfirmasi', `Pembayaran iuran bulan ${dateConvert.toString(component.paymentData[0].fees?.fee_date!)} telah dikonfirmasi oleh Admin. Terima kasih!`);
+    };
 
     useEffect(() => {
         getPaymentInfo(props.payment_id);
