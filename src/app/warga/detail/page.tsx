@@ -12,10 +12,10 @@ import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { create } from "zustand";
 import * as schema from '@/database/schema';
 import numberFormatter from "@/lib/formatter";
-import PaginationWidget from "@/components/pagination";
 import EditUserPopup from "@/components/edit-user-popup";
 import PaymentPopup from "@/components/payment-popup";
 import LoadingAnimation from "@/components/loading-animation";
+import * as dateConvert from "@/lib/date-converter";
 
 interface ComponentState {
     userData: {fees: schema.feesType, payments: schema.paymentsType, user_id: number, name: string, address: string, phone: string, rt: string}[],
@@ -142,6 +142,19 @@ function DetailWarga(){
         .finally(() => setIsLoading(false));
     }, []);
 
+    const getHistoryByDate = useCallback(async (user_id: number, date: string) => {
+        return await axios.get(`${process.env.API_URL}/admin/users?user_id=${user_id}&date=${date}`, { withCredentials: true })
+            .then((res: AxiosResponse) => {
+                if(res.status === 200){
+                    const { data } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, user_id: number, name: string, address: string, phone: string, rt: string}[] };
+                    component.setPaymentsList(data);
+                }
+            })
+            .catch((error: AxiosError) => {
+                console.log(error);
+            })
+    }, []);
+
     const deleteUser = useCallback(async (user_id: number) => {
         return await axios.delete(`${process.env.API_URL}/admin/users?user_id=${user_id}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
@@ -202,6 +215,7 @@ function DetailWarga(){
 
         deleteUser(user_id);
     };
+    const dateHistoryFilterHandler = (e: React.ChangeEvent<HTMLInputElement>) => getHistoryByDate(component.userData[0].user_id, e.currentTarget.value);
 
     const resetDate = () => {
         currentDate.current = {
@@ -226,7 +240,9 @@ function DetailWarga(){
     }, [refresh]);
         
     return isLoading ? <LoadingAnimation/> : component.userData ? <NavigationBar sidebarIndex={2}>
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-5 gap-8">
+        {!component.userData.length ? <div className="w-full h-screen flex flex-col gap-8 justify-center items-center">
+            <span>Anda perlu mengatur Iuran bulan {dateConvert.toString(`${new Date().getFullYear()}-${new Date().getMonth() + 1}`)} dahulu untuk melihat data warga. <span className="cursor-pointer underline" onClick={() => route.push('/dashboard')}>Kembali ke Dashboard</span></span>
+        </div> : <div className="mt-8 grid grid-cols-1 md:grid-cols-5 gap-8">
             <div className="col-span-1 md:col-span-3 flex flex-col gap-8">
                 <Container>
                     <div className="flex gap-4 justify-between">
@@ -256,7 +272,10 @@ function DetailWarga(){
                     </div>
                 </Container>
                 <Container>
-                    <h1 className="text-lg font-semibold">Riwayat Iuran</h1>
+                    <div className="flex justify-between items-center">
+                        <h1 className="text-lg font-semibold">Riwayat Iuran</h1>
+                        <input type="month" className="[&::-webkit-datetime-edit]:text-sm [&::-webkit-calendar-picker-indicator]:invert-[1] p-2 bg-blue-500 rounded-md text-white outline-none" name="filter_fee_history" defaultValue={`${new Date().getFullYear()}-${new Date().getMonth() + 1}`} onChange={dateHistoryFilterHandler}/>
+                    </div>
                     <div className="flex gap-2 my-4">
                         <ChoiceChip label="Semua" active={component.filterStatusIndex === 0} onClick={() => {component.setFilterStatusIndex(0); StatusFilteredDataHandler(component.userData[0].user_id, 'Semua')}}/>
                         <ChoiceChip label="Lunas" active={component.filterStatusIndex === 1} onClick={() => {component.setFilterStatusIndex(1); StatusFilteredDataHandler(component.userData[0].user_id, 'done')}}/>
@@ -303,7 +322,7 @@ function DetailWarga(){
                     {component.monthList.length ? <button className="bg-blue-500 p-3 text-white rounded-lg mt-8 w-full" onClick={() => setMultipleFeesHandler(component.userData[0].user_id, component.monthList)}>Tandai Lunas</button> : null}
                 </Container>
             </div>
-        </div>
+        </div>}
         {component.showEditUserPopup ? <EditUserPopup popupHandler={component.setShowEditUserPopup} data={{user_id: component.userData[0].user_id, name: component.userData[0].name, phone: component.userData[0].phone, address: component.userData[0].address, rt: component.userData[0].rt}} refresh={refresh}/> : null}
         {component.showPaymentPopup ? <PaymentPopup popupHandler={component.setShowPaymentPopup} payment_id={component.selectedPaymentID} refresh={refresh}/> : null}
     </NavigationBar> : null;

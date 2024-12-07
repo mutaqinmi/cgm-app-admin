@@ -391,13 +391,14 @@ function Iuran() {
             <div className="mt-8 w-full grid grid-cols-1 md:grid-cols-5 gap-8">
                 <div className="col-span-1 md:col-span-3 flex flex-col gap-8">
                     <Container>
-                        <div className="w-full flex-col-reverse md:flex-row flex justify-between items-start md:items-center gap-4">
-                            <div className="flex gap-2">
+                        <div className="w-full flex-col-reverse flex justify-between items-start gap-4">
+                            <div className="w-full flex gap-2 overflow-x-auto hide-scrollbar">
                                 <ChoiceChip label="Semua" active={component.filterStatusIndex === 0} onClick={() => {component.setFilterStatusIndex(0); filterCurrentMonthFeeHandler(component.currentMonthData![0].fees.fee_id, component.selectedContext, 'Semua', component.userListPagination)}}/>
                                 <ChoiceChip label="Lunas" active={component.filterStatusIndex === 1} onClick={() => {component.setFilterStatusIndex(1); filterCurrentMonthFeeHandler(component.currentMonthData![0].fees.fee_id, component.selectedContext, 'done', component.userListPagination)}}/>
-                                <ChoiceChip label="Belum Lunas" active={component.filterStatusIndex === 2} onClick={() => {component.setFilterStatusIndex(2); filterCurrentMonthFeeHandler(component.currentMonthData![0].fees.fee_id, component.selectedContext, 'undone', component.userListPagination)}}/>
+                                <ChoiceChip label="Menunggu Konfirmasi" active={component.filterStatusIndex === 2} onClick={() => {component.setFilterStatusIndex(2); filterCurrentMonthFeeHandler(component.currentMonthData![0].fees.fee_id, component.selectedContext, 'pending', component.userListPagination)}}/>
+                                <ChoiceChip label="Belum Lunas" active={component.filterStatusIndex === 3} onClick={() => {component.setFilterStatusIndex(3); filterCurrentMonthFeeHandler(component.currentMonthData![0].fees.fee_id, component.selectedContext, 'undone', component.userListPagination)}}/>
                             </div>
-                            <SearchField value={component.searchKeyword} setValue={component.setSearchKeyword} onChange={() => searchUserHandler(component.currentMonthData![0].fees.fee_id, component.selectedContext, component.searchKeyword)}/>
+                            <SearchField value={component.searchKeyword} setValue={component.setSearchKeyword} onChange={() => searchUserHandler(component.currentMonthData![0].fees.fee_id, component.selectedContext, component.searchKeyword)} customWidth='md:w-full'/>
                         </div>
                         <div className="mt-8">
                             {component.usersList.length ? <table className="w-full">

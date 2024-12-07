@@ -304,7 +304,7 @@ export default function Page() {
                 <Container>
                     <div className="flex-col md:flex-row flex gap-4 justify-between items-start md:items-center">
                         <h1 className="text-lg font-semibold">Daftar Warga</h1>
-                        <div className="flex gap-4 justify-center items-center">
+                        <div className="w-full md:w-fit flex gap-4 justify-center items-center">
                             <SearchField value={component.searchKeyword} setValue={component.setSearchKeyword} onChange={searchUserHandler}/>
                             <VerticalDivider/>
                             <IconButton icon={<Plus size={14}/>} onClick={() => component.setShowAddUserPopup(true)}/>
