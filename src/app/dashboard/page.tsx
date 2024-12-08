@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import Card from '@/components/card';
 import Container from '@/components/container';
@@ -202,7 +203,7 @@ export default function Page() {
                 const { message } = error.response?.data as { message: string };
                 console.log(message);
             })
-    }, []);
+    }, [getAllFees]);
 
     const getActivityHistory = useCallback(async (pagination: number) => {
         setIsLoading(true);

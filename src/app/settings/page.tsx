@@ -43,13 +43,6 @@ const useComponent = create<ComponentState>((set) => {
 export default function Tentang(){
     const component = useComponent();
 
-    const refresh = () => {
-        if(typeof window !== 'undefined'){
-            const admin_id = localStorage.getItem("admin_id");
-            getAdminData(parseInt(admin_id!));
-        }
-    }
-
     const getAdminData = useCallback(async (admin_id: number) => {
         return await axios.get(`${process.env.API_URL}/admin?admin_id=${admin_id}`, { withCredentials: true })
             .then((res: AxiosResponse) => {
@@ -62,6 +55,17 @@ export default function Tentang(){
                 console.log(error);
             })
     }, []);
+
+    const refresh = useCallback(() => {
+        if(typeof window !== 'undefined'){
+            const admin_id = localStorage.getItem("admin_id");
+            getAdminData(parseInt(admin_id!));
+        }
+    }, [getAdminData]);
+
+    useEffect(() => {
+        refresh();
+    }, [refresh]);
 
     const updateAdminPhone = useCallback(async (admin_id: number, phone: string) => {
         return await axios.patch(`${process.env.API_URL}/admin?edit=phone`, { admin_id, phone }, { withCredentials: true })
@@ -101,13 +105,6 @@ export default function Tentang(){
 
         updateAdminPassword(e.currentTarget.admin_id.value, e.currentTarget.old_password.value, e.currentTarget.new_password.value);
     }
-
-    useEffect(() => {
-        if(typeof window !== 'undefined'){
-            const admin_id = localStorage.getItem("admin_id");
-            getAdminData(parseInt(admin_id!));
-        }
-    }, [getAdminData]);
 
     return <NavigationBar sidebarIndex={3}>
         <div className="mt-8 w-full grid grid-cols-1 md:grid-cols-4 gap-8">

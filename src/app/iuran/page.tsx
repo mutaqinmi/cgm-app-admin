@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import * as schema from '@/database/schema';
 import axios, { AxiosError, AxiosResponse } from 'axios';

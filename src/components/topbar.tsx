@@ -63,7 +63,10 @@ export default function TopBar(props: {navbarState: number; sidebarController: (
         <div className="flex flex-row-reverse justify-center items-center gap-4" onClick={() => {setShowNotification(!showNotification); markAsRead(adminID)}}>
             <div className="relative">
                 <Bell size={32}/>
-                {totalUnreadNotification > 0 ? <div className="p-2 bg-red-500 rounded-full absolute top-0 right-0"></div> : null}
+                {totalUnreadNotification > 0 ? <>
+                    <div className="animate-ping p-2 bg-red-500 rounded-full absolute top-0 right-0"></div>
+                    <div className="p-2 bg-red-500 rounded-full absolute top-0 right-0"></div>
+                </> : null}
             </div>
         </div>
         {showNotification ? <div className="bg-white w-80 md:w-96 p-4 rounded-lg absolute right-8 -top-0 mt-24 flex flex-col gap-4">

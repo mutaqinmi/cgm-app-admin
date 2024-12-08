@@ -10,7 +10,7 @@ export default function UserActivityList(props: {onClick?: () => void; month: Da
             </div>
             <div className="flex flex-col">
                 <div className="flex gap-2 items-center">
-                    <span className="text-xs">{`${new Date(props.month).getDate()} ${dateConvert.toString(`${new Date(props.month).getFullYear()}-${new Date(props.month).getMonth() + 1}`)} ${new Date(props.month).getUTCHours()}:${new Date(props.month).getMinutes()}`}</span>
+                    <span className="text-xs">{`${new Date(props.month).getUTCDate()} ${dateConvert.toString(`${new Date(props.month).getFullYear()}-${new Date(props.month).getMonth() + 1}`)} ${new Date(props.month).getUTCHours()}:${new Date(props.month).getMinutes()}`}</span>
                     <span className="leading-none">&#8226;</span>
                     <StatusChip status={props.status}/>
                 </div>

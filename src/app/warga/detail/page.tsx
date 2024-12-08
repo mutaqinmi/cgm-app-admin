@@ -115,6 +115,25 @@ function DetailWarga(){
                 if(res.status === 200){
                     const { data } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, user_id: number, name: string, address: string, phone: string, rt: string}[] };
                     component.setPaymentsList(data);
+                    currentDate.current.month = parseInt(data[0].fees.fee_date?.split('-')[1]!);
+                    currentDate.current.year = parseInt(data[0].fees.fee_date?.split('-')[0]!);
+                }
+            })
+            .catch((error: AxiosError) => {
+                console.log(error);
+            })
+            .finally(() => setIsLoading(false));
+    }, []);
+
+    const setCurrentDate = useCallback(async (user_id: number, status: string) => {
+        setIsLoading(true);
+
+        return await axios.get(`${process.env.API_URL}/admin/users?user_id=${user_id}&status=${status}`, { withCredentials: true })
+            .then((res: AxiosResponse) => {
+                if(res.status === 200){
+                    const { data } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, user_id: number, name: string, address: string, phone: string, rt: string}[] };
+                    currentDate.current.month = parseInt(data[0].fees.fee_date?.split('-')[1]!);
+                    currentDate.current.year = parseInt(data[0].fees.fee_date?.split('-')[0]!);
                 }
             })
             .catch((error: AxiosError) => {
@@ -132,6 +151,8 @@ function DetailWarga(){
         }, { withCredentials: true })
         .then((res: AxiosResponse) => {
             if(res.status === 200){
+                const month = monthList.map((month) => dateConvert.toString(month));
+                setUserNotification(user_id, 'Pembayaran berhasil', `Pembayaran iuran untuk bulan ${month} telah dikonfirmasi oleh Admin. Terima kasih!`)
                 resetDate();
                 refresh();
             }
@@ -141,6 +162,23 @@ function DetailWarga(){
         })
         .finally(() => setIsLoading(false));
     }, []);
+
+    const setUserNotification = useCallback(async (user_id: number, notification_title: string, notification_content: string) => {
+        return await axios.post(`${process.env.API_URL}/admin/notification?type=plain`, {
+            user_id,
+            notification_title,
+            notification_content,
+        }, { withCredentials: true })
+        .then((res: AxiosResponse) => {
+            if(res.status === 200){
+                return true;
+            }
+        })
+        .catch((error: AxiosError) => {
+            const { message } = error.response?.data as { message: string };
+            console.log(message);
+        })
+    }, [])
 
     const getHistoryByDate = useCallback(async (user_id: number, date: string) => {
         return await axios.get(`${process.env.API_URL}/admin/users?user_id=${user_id}&date=${date}`, { withCredentials: true })
@@ -232,6 +270,7 @@ function DetailWarga(){
         if(user_id){
             getUserData(parseInt(user_id));
             getUndonePaymentsFilteredData(parseInt(user_id));
+            setCurrentDate(parseInt(user_id), 'done');
         }
     }, [searchParams, getUserData, getUndonePaymentsFilteredData])
  
