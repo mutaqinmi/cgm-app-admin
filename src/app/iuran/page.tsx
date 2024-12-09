@@ -40,6 +40,7 @@ interface ComponentState {
     paymentHistoryCount: number;
     showPaymentPopup: boolean,
     selectedPaymentID: number,
+    listForRT: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[];
     setSelectedContext: (selectedContext: string) => void;
     setShowContextMenu: (showContextMenu: boolean) => void;
     setFilterStatusIndex: (filterStatusIndex: number) => void;
@@ -55,7 +56,8 @@ interface ComponentState {
     setPaymentHistoryPagination: (paymentHistoryPagination: number) => void;
     setPaymentHistoryCount: (paymentHistoryCount: number) => void;
     setShowPaymentPopup: (data: boolean) => void,
-    setSelectedPaymentID: (data: number) => void
+    setSelectedPaymentID: (data: number) => void,
+    setListForRT: (listForRT: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[]) => void;
 }
 
 const useComponent = create<ComponentState>((set) => {
@@ -76,6 +78,7 @@ const useComponent = create<ComponentState>((set) => {
         paymentHistoryCount: 0,
         showPaymentPopup: false,
         selectedPaymentID: 0,
+        listForRT: [],
         setSelectedContext: (selectedContext: string) => set({selectedContext}),
         setShowContextMenu: (showContextMenu: boolean) => set({showContextMenu}),
         setFilterStatusIndex: (filterStatusIndex: number) => set({filterStatusIndex}),
@@ -91,7 +94,8 @@ const useComponent = create<ComponentState>((set) => {
         setPaymentHistoryPagination: (paymentHistoryPagination: number) => set({paymentHistoryPagination}),
         setPaymentHistoryCount: (paymentHistoryCount: number) => set({paymentHistoryCount}),
         setShowPaymentPopup: (data) => set(() => ({ showPaymentPopup: data })),
-        setSelectedPaymentID: (data) => set(() => ({ selectedPaymentID: data }))
+        setSelectedPaymentID: (data) => set(() => ({ selectedPaymentID: data })),
+        setListForRT: (listForRT: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[]) => set({listForRT})
     }
 })
 
@@ -110,6 +114,7 @@ function Iuran() {
                     const { data, users } = res.data as { data: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[], users: {fees: schema.feesType, payments: schema.paymentsType, users: schema.usersType}[] };
                     component.setCurrentMonthData(data);
                     component.setUsersList(users);
+                    component.setListForRT(data);
                 }
             })
             .catch((error: AxiosError) => {
@@ -119,7 +124,7 @@ function Iuran() {
             .finally(() => setIsLoading(false));
     }, [])
 
-    const currentMonthFeeAPI = useCallback(async (pagination: number) => {        
+    const currentMonthFeeAPI = useCallback(async (pagination: number) => {
         const currentMonth = new Date().getMonth() + 1;
         const currentYear = new Date().getFullYear();
 
@@ -298,6 +303,7 @@ function Iuran() {
         return accumulator;
     }, 0) : 0;
 
+    const rtList = component.listForRT ? [...new Set(component.listForRT.map(item => item.users.rt))] : [];
     const filterRTHandler = (fee_id: number, filter: string, pagination: number) => getRTFilteredCurrentMonthFee(fee_id, filter, pagination);
     const userListPaginationHandler = (pagination: number) => {
         if(component.filterStatusIndex !== 0){
@@ -362,7 +368,7 @@ function Iuran() {
     useEffect(() => {
         refresh();
     }, [refresh]);
-    
+
     return isLoading ? <LoadingAnimation/> : component.currentMonthData ? <NavigationBar sidebarIndex={1}>
         {!component.currentMonthData.length ? <div className="w-full h-screen flex flex-col gap-8 justify-center items-center text-center">
             <span>Iuran bulan {dateConvert.toString(`${new Date().getFullYear()}-${new Date().getMonth() + 1}`)} belum anda atur. <span className="underline cursor-pointer" onClick={() => component.setShowSetFeePopup(true)}>Atur sekarang</span></span>
@@ -376,10 +382,13 @@ function Iuran() {
                     <DropDown label={component.selectedContext} onClick={() => component.setShowContextMenu(!component.showContextMenu)}/>
                     {component.showContextMenu ? <div className="w-full absolute mt-2 flex flex-col justify-center items-center">
                         <DropDownItem label="Semua RT" onClick={() => {component.setSelectedContext('Semua RT'); component.setShowContextMenu(false); filterRTHandler(component.currentMonthData![0].fees.fee_id, 'Semua RT', component.userListPagination); component.setFilterStatusIndex(0);}}/>
-                        <DropDownItem label="RT 001" onClick={() => {component.setSelectedContext('RT 001'); component.setShowContextMenu(false); filterRTHandler(component.currentMonthData![0].fees.fee_id, '1', component.userListPagination); component.setFilterStatusIndex(0);}}/>
+                        {rtList.map((rt) => {
+                            return <DropDownItem key={rt} label={`RT 00${rt}`} onClick={() => {component.setSelectedContext(`RT 00${rt}`); component.setShowContextMenu(false); filterRTHandler(component.currentMonthData![0].fees.fee_id, rt!, component.userListPagination); component.setFilterStatusIndex(0);}}/>
+                        })}
+                        {/* <DropDownItem label="RT 001" onClick={() => {component.setSelectedContext('RT 001'); component.setShowContextMenu(false); filterRTHandler(component.currentMonthData![0].fees.fee_id, '1', component.userListPagination); component.setFilterStatusIndex(0);}}/>
                         <DropDownItem label="RT 002" onClick={() => {component.setSelectedContext('RT 002'); component.setShowContextMenu(false); filterRTHandler(component.currentMonthData![0].fees.fee_id, '2', component.userListPagination); component.setFilterStatusIndex(0);}}/>
                         <DropDownItem label="RT 003" onClick={() => {component.setSelectedContext('RT 003'); component.setShowContextMenu(false); filterRTHandler(component.currentMonthData![0].fees.fee_id, '3', component.userListPagination); component.setFilterStatusIndex(0);}}/>
-                        <DropDownItem label="RT 004" onClick={() => {component.setSelectedContext('RT 004'); component.setShowContextMenu(false); filterRTHandler(component.currentMonthData![0].fees.fee_id, '4', component.userListPagination); component.setFilterStatusIndex(0);}}/>
+                        <DropDownItem label="RT 004" onClick={() => {component.setSelectedContext('RT 004'); component.setShowContextMenu(false); filterRTHandler(component.currentMonthData![0].fees.fee_id, '4', component.userListPagination); component.setFilterStatusIndex(0);}}/> */}
                     </div> : null}
                 </div>
             </div>

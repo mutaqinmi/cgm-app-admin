@@ -86,7 +86,8 @@ function DetailWarga(){
                 }
             })
             .catch((error: AxiosError) => {
-                console.log(error);
+                const { message } = error.response?.data as { message: string };
+                console.log(message);
             })
             .finally(() => setIsLoading(false));
     }, []);
@@ -102,7 +103,8 @@ function DetailWarga(){
                 }
             })
             .catch((error: AxiosError) => {
-                console.log(error);
+                const { message } = error.response?.data as { message: string };
+                console.log(message);
             })
             .finally(() => setIsLoading(false));
     }, []);
@@ -120,7 +122,8 @@ function DetailWarga(){
                 }
             })
             .catch((error: AxiosError) => {
-                console.log(error);
+                const { message } = error.response?.data as { message: string };
+                console.log(message);
             })
             .finally(() => setIsLoading(false));
     }, []);
@@ -158,7 +161,8 @@ function DetailWarga(){
             }
         })
         .catch((error: AxiosError) => {
-            console.log(error);
+            const { message } = error.response?.data as { message: string };
+            console.log(message);
         })
         .finally(() => setIsLoading(false));
     }, []);
@@ -189,7 +193,8 @@ function DetailWarga(){
                 }
             })
             .catch((error: AxiosError) => {
-                console.log(error);
+                const { message } = error.response?.data as { message: string };
+                console.log(message);
             })
     }, []);
 
@@ -201,7 +206,8 @@ function DetailWarga(){
                 }
             })
             .catch((error: AxiosError) => {
-                console.log(error);
+                const { message } = error.response?.data as { message: string };
+                alert(message);
             })
     }, []);
 
