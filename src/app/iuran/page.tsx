@@ -364,7 +364,7 @@ function Iuran() {
     }, [refresh]);
     
     return isLoading ? <LoadingAnimation/> : component.currentMonthData ? <NavigationBar sidebarIndex={1}>
-        {!component.currentMonthData.length ? <div className="w-full h-screen flex flex-col gap-8 justify-center items-center">
+        {!component.currentMonthData.length ? <div className="w-full h-screen flex flex-col gap-8 justify-center items-center text-center">
             <span>Iuran bulan {dateConvert.toString(`${new Date().getFullYear()}-${new Date().getMonth() + 1}`)} belum anda atur. <span className="underline cursor-pointer" onClick={() => component.setShowSetFeePopup(true)}>Atur sekarang</span></span>
         </div> : <>
             <div className="mt-8 flex justify-between items-center">

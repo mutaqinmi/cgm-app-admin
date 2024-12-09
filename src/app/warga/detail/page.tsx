@@ -279,7 +279,7 @@ function DetailWarga(){
     }, [refresh]);
         
     return isLoading ? <LoadingAnimation/> : component.userData ? <NavigationBar sidebarIndex={2}>
-        {!component.userData.length ? <div className="w-full h-screen flex flex-col gap-8 justify-center items-center">
+        {!component.userData.length ? <div className="w-full h-screen flex flex-col gap-8 justify-center items-center text-center">
             <span>Anda perlu mengatur Iuran bulan {dateConvert.toString(`${new Date().getFullYear()}-${new Date().getMonth() + 1}`)} dahulu untuk melihat data warga. <span className="cursor-pointer underline" onClick={() => route.push('/dashboard')}>Kembali ke Dashboard</span></span>
         </div> : <div className="mt-8 grid grid-cols-1 md:grid-cols-5 gap-8">
             <div className="col-span-1 md:col-span-3 flex flex-col gap-8">

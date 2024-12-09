@@ -278,78 +278,82 @@ export default function Page() {
     useEffect(() => refresh(), [refresh]);
 
     return isLoading ? <LoadingAnimation/> : <NavigationBar sidebarIndex={0}>
-        {component.currentMonthData ? component.currentMonthData.length ? <>
-            <div className="mt-8">
-                <h1 className="font-semibold text-lg">Iuran Bulan Ini</h1>
-            </div>
-            <div className="w-full mt-4 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-                <Card color="blue" title="Jumlah Warga" total={component.currentMonthData.length} nominal={component.currentMonthData.length * component.currentMonthData[0].fees.fee_amount!} icon={<Users/>}/>
-                <Card color="green" title="Sudah Lunas" total={totalDoneAmount} nominal={totalDoneAmount * component.currentMonthData[0].fees.fee_amount!} icon={<HandCoins/>}/>
-                <Card color="yellow" title="Menunggu Konfirmasi" total={totalPendingAmount} nominal={totalPendingAmount * component.currentMonthData[0].fees.fee_amount!} icon={<HandCoins/>}/>
-                <Card color="red" title="Belum Lunas" total={totalUndoneAmount} nominal={totalUndoneAmount * component.currentMonthData[0].fees.fee_amount!} icon={<HandCoins/>}/>
-            </div>
-        </> : <span className="w-full p-4 bg-red-200 text-red-500 border border-red-500 mt-4 rounded-lg block text-center">Iuran bulan {dateConvert.toString(`${new Date().getFullYear()}-${new Date().getMonth() + 1}`)} belum anda atur. <span className="underline cursor-pointer" onClick={() => component.setShowSetFeePopup(true)}>Atur sekarang</span></span> : null}
-        <div className="mt-8 w-full grid grid-cols-1 md:grid-cols-5 gap-8">
-            <div className="col-span-1 md:col-span-3 flex flex-col gap-8">
-                <Container>
-                    <div>
-                        <h1 className="text-lg font-semibold">Grafik Pembayaran</h1>
-                        <span className="text-sm">Menampilkan statistik selama 6 bulan terakhir.</span>
-                    </div>
-                    <div className="mt-8">
-                        <Chart chartData={component.chartData.map((data) => {
-                            return { month: dateConvert.toString(data.month), done: data.done, undone: data.undone }
-                        })}/>
-                    </div>
-                </Container>
-                <Container>
-                    <div className="flex-col md:flex-row flex gap-4 justify-between items-start md:items-center">
-                        <h1 className="text-lg font-semibold">Daftar Warga</h1>
-                        <div className="w-full md:w-fit flex gap-4 justify-center items-center">
-                            <SearchField value={component.searchKeyword} setValue={component.setSearchKeyword} onChange={searchUserHandler}/>
-                            <VerticalDivider/>
-                            <IconButton icon={<Plus size={14}/>} onClick={() => component.setShowAddUserPopup(true)}/>
+        {!component.usersList.length ? <div className="w-full h-screen flex flex-col gap-8 justify-center items-center text-center">
+                <span>Data warga belum anda atur, <span className='cursor-pointer underline' onClick={() => component.setShowAddUserPopup(true)}>tambahkan warga</span> untuk memulai.</span>
+            </div> : <>
+            {component.currentMonthData ? component.currentMonthData.length ? <>
+                <div className="mt-8">
+                    <h1 className="font-semibold text-lg">Iuran Bulan Ini</h1>
+                </div>
+                <div className="w-full mt-4 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                    <Card color="blue" title="Jumlah Warga" total={component.currentMonthData.length} nominal={component.currentMonthData.length * component.currentMonthData[0].fees.fee_amount!} icon={<Users/>}/>
+                    <Card color="green" title="Sudah Lunas" total={totalDoneAmount} nominal={totalDoneAmount * component.currentMonthData[0].fees.fee_amount!} icon={<HandCoins/>}/>
+                    <Card color="yellow" title="Menunggu Konfirmasi" total={totalPendingAmount} nominal={totalPendingAmount * component.currentMonthData[0].fees.fee_amount!} icon={<HandCoins/>}/>
+                    <Card color="red" title="Belum Lunas" total={totalUndoneAmount} nominal={totalUndoneAmount * component.currentMonthData[0].fees.fee_amount!} icon={<HandCoins/>}/>
+                </div>
+            </> : <span className="w-full p-4 bg-red-200 text-red-500 border border-red-500 mt-4 rounded-lg block text-center">Iuran bulan {dateConvert.toString(`${new Date().getFullYear()}-${new Date().getMonth() + 1}`)} belum anda atur. <span className="underline cursor-pointer" onClick={() => component.setShowSetFeePopup(true)}>Atur sekarang</span></span> : null}
+            <div className="mt-8 w-full grid grid-cols-1 md:grid-cols-5 gap-8">
+                <div className="col-span-1 md:col-span-3 flex flex-col gap-8">
+                    <Container>
+                        <div>
+                            <h1 className="text-lg font-semibold">Grafik Pembayaran</h1>
+                            <span className="text-sm">Menampilkan statistik selama 6 bulan terakhir.</span>
                         </div>
-                    </div>
-                    <div className="mt-8">
-                        <table className="w-full">
-                            <TableHead title={['Nama', 'No. Telepon', 'Alamat', 'RT']}/>
-                            <tbody>
-                                {component.usersList.map((user: schema.usersType) => {
-                                    return <UserListItem key={user.user_id} name={user.name!} phone={user.phone!} address={user.address!} rt={user.rt!} onClick={() => route.push(`/warga/detail?user_id=${user.user_id!}`)}/>
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
-                    {component.searchKeyword === '' ? <PaginationWidget currentPage={component.userListPagination} totalPage={Math.ceil(component.userCount / 10)} onClickNext={() => {if(component.userListPagination >= Math.ceil(component.userCount / 10)) return; component.setUserListPagination(component.userListPagination + 1); userListPaginationHandler(component.userListPagination + 1)}} onClickPrev={() => {if(component.userListPagination <= 1) return; component.setUserListPagination(component.userListPagination - 1); userListPaginationHandler(component.userListPagination - 1)}}/> : null}
-                </Container>
+                        <div className="mt-8">
+                            <Chart chartData={component.chartData.map((data) => {
+                                return { month: dateConvert.toString(data.month), done: data.done, undone: data.undone }
+                            })}/>
+                        </div>
+                    </Container>
+                    <Container>
+                        <div className="flex-col md:flex-row flex gap-4 justify-between items-start md:items-center">
+                            <h1 className="text-lg font-semibold">Daftar Warga</h1>
+                            <div className="w-full md:w-fit flex gap-4 justify-center items-center">
+                                <SearchField value={component.searchKeyword} setValue={component.setSearchKeyword} onChange={searchUserHandler}/>
+                                <VerticalDivider/>
+                                <IconButton icon={<Plus size={14}/>} onClick={() => component.setShowAddUserPopup(true)}/>
+                            </div>
+                        </div>
+                        <div className="mt-8">
+                            <table className="w-full">
+                                <TableHead title={['Nama', 'No. Telepon', 'Alamat', 'RT']}/>
+                                <tbody>
+                                    {component.usersList.map((user: schema.usersType) => {
+                                        return <UserListItem key={user.user_id} name={user.name!} phone={user.phone!} address={user.address!} rt={user.rt!} onClick={() => route.push(`/warga/detail?user_id=${user.user_id!}`)}/>
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                        {component.searchKeyword === '' ? <PaginationWidget currentPage={component.userListPagination} totalPage={Math.ceil(component.userCount / 10)} onClickNext={() => {if(component.userListPagination >= Math.ceil(component.userCount / 10)) return; component.setUserListPagination(component.userListPagination + 1); userListPaginationHandler(component.userListPagination + 1)}} onClickPrev={() => {if(component.userListPagination <= 1) return; component.setUserListPagination(component.userListPagination - 1); userListPaginationHandler(component.userListPagination - 1)}}/> : null}
+                    </Container>
+                </div>
+                <div className="col-span-1 md:col-span-2 flex flex-col gap-8">
+                    <Container>
+                        <div className="flex justify-between items-center">
+                            <h1 className="text-lg font-semibold">Rekapan Iuran Bulanan</h1>
+                            <input type="month" name="month" id="month" onChange={dateFilterHandler} className="bg-blue-500 text-white [&::-webkit-calendar-picker-indicator]:invert-[1] outline-none p-2 rounded-md [&::-webkit-datetime-edit]:text-sm" defaultValue={`${new Date().getFullYear()}-${new Date().getMonth() + 1}`}/>
+                        </div>
+                        <div className="mt-8 flex flex-col gap-4">
+                            {component.feeList.length ? component.feeList.map((fee: schema.feesType) => {
+                                return <FeeListItem key={fee.fee_id} month={fee.fee_date!} onClick={() => route.push(`/iuran?fee_id=${fee.fee_id}`)}/>
+                            }) : <span className='text-sm italic text-gray-500 text-center'>Rekapan iuran tidak ditemukan.</span>}
+                        </div>
+                        {component.feeList.length ? <PaginationWidget currentPage={component.feeListPagination} totalPage={Math.ceil(component.feesCount / 10)} onClickNext={() => {if(component.feeListPagination >= Math.ceil(component.feesCount / 10)) return; component.setFeeListPagination(component.feeListPagination + 1); feeListPaginationHandler(component.feeListPagination + 1)}} onClickPrev={() => {if(component.feeListPagination <= 1) return; component.setFeeListPagination(component.feeListPagination - 1); feeListPaginationHandler(component.feeListPagination - 1)}}/> : null}
+                    </Container>
+                    <Container>
+                        <div className="flex justify-between items-center">
+                            <h1 className="text-lg font-semibold">Aktivitas Terbaru</h1>
+                        </div>
+                        <div className="mt-8 flex flex-col gap-4">
+                            {component.paymentHistoryList.map((history: {payments: schema.paymentsType, users: schema.usersType}) => {
+                                return <UserActivityList key={history.payments.payment_id} month={history.payments.last_update!} name={history.users.name!} phone={history.users.phone!} status={history.payments.payment_description!} onClick={() => {component.setSelectedPaymentID(history.payments.payment_id); component.setShowPaymentPopup(true)}}/>
+                            })}
+                        </div>
+                        <PaginationWidget currentPage={component.paymentHistoryPagination} totalPage={Math.ceil(component.paymentHistoryCount / 5)} onClickNext={() => {if(component.paymentHistoryPagination >= Math.ceil(component.paymentHistoryCount / 5)) return; component.setPaymentHistoryPagination(component.paymentHistoryPagination + 1); paymentHistoryPaginationHandler(component.paymentHistoryPagination + 1)}} onClickPrev={() => {if(component.paymentHistoryPagination <= 1) return; component.setPaymentHistoryPagination(component.paymentHistoryPagination - 1); paymentHistoryPaginationHandler(component.paymentHistoryPagination - 1)}}/>
+                    </Container>
+                </div>
             </div>
-            <div className="col-span-1 md:col-span-2 flex flex-col gap-8">
-                <Container>
-                    <div className="flex justify-between items-center">
-                        <h1 className="text-lg font-semibold">Rekapan Iuran Bulanan</h1>
-                        <input type="month" name="month" id="month" onChange={dateFilterHandler} className="bg-blue-500 text-white [&::-webkit-calendar-picker-indicator]:invert-[1] outline-none p-2 rounded-md [&::-webkit-datetime-edit]:text-sm" defaultValue={`${new Date().getFullYear()}-${new Date().getMonth() + 1}`}/>
-                    </div>
-                    <div className="mt-8 flex flex-col gap-4">
-                        {component.feeList.length ? component.feeList.map((fee: schema.feesType) => {
-                            return <FeeListItem key={fee.fee_id} month={fee.fee_date!} onClick={() => route.push(`/iuran?fee_id=${fee.fee_id}`)}/>
-                        }) : <span className='text-sm italic text-gray-500 text-center'>Rekapan iuran tidak ditemukan.</span>}
-                    </div>
-                    {component.feeList.length ? <PaginationWidget currentPage={component.feeListPagination} totalPage={Math.ceil(component.feesCount / 10)} onClickNext={() => {if(component.feeListPagination >= Math.ceil(component.feesCount / 10)) return; component.setFeeListPagination(component.feeListPagination + 1); feeListPaginationHandler(component.feeListPagination + 1)}} onClickPrev={() => {if(component.feeListPagination <= 1) return; component.setFeeListPagination(component.feeListPagination - 1); feeListPaginationHandler(component.feeListPagination - 1)}}/> : null}
-                </Container>
-                <Container>
-                    <div className="flex justify-between items-center">
-                        <h1 className="text-lg font-semibold">Aktivitas Terbaru</h1>
-                    </div>
-                    <div className="mt-8 flex flex-col gap-4">
-                        {component.paymentHistoryList.map((history: {payments: schema.paymentsType, users: schema.usersType}) => {
-                            return <UserActivityList key={history.payments.payment_id} month={history.payments.last_update!} name={history.users.name!} phone={history.users.phone!} status={history.payments.payment_description!} onClick={() => {component.setSelectedPaymentID(history.payments.payment_id); component.setShowPaymentPopup(true)}}/>
-                        })}
-                    </div>
-                    <PaginationWidget currentPage={component.paymentHistoryPagination} totalPage={Math.ceil(component.paymentHistoryCount / 5)} onClickNext={() => {if(component.paymentHistoryPagination >= Math.ceil(component.paymentHistoryCount / 5)) return; component.setPaymentHistoryPagination(component.paymentHistoryPagination + 1); paymentHistoryPaginationHandler(component.paymentHistoryPagination + 1)}} onClickPrev={() => {if(component.paymentHistoryPagination <= 1) return; component.setPaymentHistoryPagination(component.paymentHistoryPagination - 1); paymentHistoryPaginationHandler(component.paymentHistoryPagination - 1)}}/>
-                </Container>
-            </div>
-        </div>
+        </>}
         {component.showSetFeePopup ? <SetFeePopup popupHandler={component.setShowSetFeePopup} refresh={refresh}/> : null}
         {component.showAddUserPopup ? <AddUserPopup popupHandler={component.setShowAddUserPopup} refresh={refresh}/> : null}
         {component.showPaymentPopup ? <PaymentPopup popupHandler={component.setShowPaymentPopup} payment_id={component.selectedPaymentID} refresh={refresh}/> : null}

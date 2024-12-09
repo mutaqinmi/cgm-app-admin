@@ -93,7 +93,9 @@ export default function Page() {
     }, [refresh]);
 
     return isLoading ? <LoadingAnimation/> : <NavigationBar sidebarIndex={2}>
-        <div className="mt-8 w-full">
+        {!component.usersList.length ? <div className="w-full h-screen flex flex-col gap-8 justify-center items-center text-center">
+                <span>Data warga belum anda atur, <span className='cursor-pointer underline' onClick={() => component.setShowAddUserPopup(true)}>tambahkan warga</span> untuk memulai.</span>
+            </div> : <div className="mt-8 w-full">
             <Container>
                 <div className="flex-col gap-4 md:gap-0 md:flex-row flex justify-between items-start md:items-center">
                     <h1 className="text-lg font-semibold">Daftar Warga</h1>
@@ -115,7 +117,7 @@ export default function Page() {
                 </div>
                 {component.searchKeyword === '' ? <PaginationWidget currentPage={component.userListPagination} totalPage={Math.ceil(component.userCount / 10)}  onClickNext={() => {if(component.userListPagination >= Math.ceil(component.userCount / 10)) return; component.setUserListPagination(component.userListPagination + 1); userListPaginationHandler(component.userListPagination + 1)}} onClickPrev={() => {if(component.userListPagination <= 1) return; component.setUserListPagination(component.userListPagination - 1); userListPaginationHandler(component.userListPagination - 1)}}/> : null}
             </Container>
-        </div>
+        </div>}
         {component.showAddUserPopup ? <AddUserPopup popupHandler={component.setShowAddUserPopup} refresh={refresh}/> : null}
     </NavigationBar>
 }
