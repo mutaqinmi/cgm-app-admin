@@ -303,7 +303,7 @@ function Iuran() {
         return accumulator;
     }, 0) : 0;
 
-    const rtList = component.listForRT ? [...new Set(component.listForRT.map(item => item.users.rt))] : [];
+    const rtList = component.listForRT ? [...new Set(component.listForRT.map(item => item.users.rt))].sort() : [];
     const filterRTHandler = (fee_id: number, filter: string, pagination: number) => getRTFilteredCurrentMonthFee(fee_id, filter, pagination);
     const userListPaginationHandler = (pagination: number) => {
         if(component.filterStatusIndex !== 0){
@@ -410,8 +410,8 @@ function Iuran() {
                             </div>
                             <SearchField value={component.searchKeyword} setValue={component.setSearchKeyword} onChange={() => searchUserHandler(component.currentMonthData![0].fees.fee_id, component.selectedContext, component.searchKeyword)} customWidth='md:w-full'/>
                         </div>
-                        <div className="mt-8">
-                            {component.usersList.length ? <table className="w-full">
+                        <div className="mt-8 overflow-auto">
+                            {component.usersList.length ? <table className="w-full border-separate border-spacing-4">
                                 <TableHead title={['Nama', 'Alamat', 'Status']}/>
                                 <tbody>
                                     {component.usersList.map((data) => {

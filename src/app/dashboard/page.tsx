@@ -314,8 +314,8 @@ export default function Page() {
                                 <IconButton icon={<Plus size={14}/>} onClick={() => component.setShowAddUserPopup(true)}/>
                             </div>
                         </div>
-                        <div className="mt-8">
-                            <table className="w-full">
+                        <div className="mt-8 overflow-auto">
+                            <table className="w-full border-separate border-spacing-4">
                                 <TableHead title={['Nama', 'No. Telepon', 'Alamat', 'RT']}/>
                                 <tbody>
                                     {component.usersList.map((user: schema.usersType) => {
