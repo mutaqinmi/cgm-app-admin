@@ -75,6 +75,7 @@ export default function PaymentPopup(props: {refresh?: () => void; popupHandler:
     const updatePaymentInfoHandler = (payment_id: number, payment_status: boolean, payment_description: string) => {
         updatePaymentInfo(payment_id, payment_status, payment_description);
         if(payment_description === 'done') setUserPaymentNotification(payment_id, 'Pembayaran Dikonfirmasi', `Pembayaran iuran bulan ${dateConvert.toString(component.paymentData[0].fees?.fee_date!)} telah dikonfirmasi oleh Admin. Terima kasih!`);
+        if(payment_description === 'undone') setUserPaymentNotification(payment_id, 'Pembayaran Dibatalkan', `Pembayaran iuran bulan ${dateConvert.toString(component.paymentData[0].fees?.fee_date!)} telah dibatalkan oleh Admin. Mohon untuk segera melakukan pembayaran. Terima kasih!`);
     };
 
     useEffect(() => {
@@ -119,9 +120,10 @@ export default function PaymentPopup(props: {refresh?: () => void; popupHandler:
                     </div>
                 </div>
             </div>
-            {component.paymentData[0].payments?.payment_status === true ? <FilledButton type='button' label='Tandai Belum Lunas' onClick={() => updatePaymentInfoHandler(component.paymentData[0].payments.payment_id, false, 'undone')}/> : <div className='flex gap-2'>
-                <OutlinedButton type='button' label='Batal' onClick={() => props.popupHandler(false)}/>
+            {component.paymentData[0].payments?.payment_status === true ? <FilledButton type='button' label='Tandai Belum Lunas' onClick={() => updatePaymentInfoHandler(component.paymentData[0].payments.payment_id, false, 'undone')}/> : <div className={`flex gap-2 ${component.paymentData[0].payments.payment_description === 'pending' ? 'flex-col' : 'flex-row-reverse'}`}>
                 <FilledButton type='button' label='Tandai Lunas' onClick={() => updatePaymentInfoHandler(component.paymentData[0].payments.payment_id, true, 'done')}/>
+                {component.paymentData[0].payments.payment_description === 'pending' ? <FilledButton type='button' label='Batalkan Konfirmasi' className="bg-red-500" onClick={() => updatePaymentInfoHandler(component.paymentData[0].payments.payment_id, false, 'undone')}/> : null}
+                <OutlinedButton type='button' label='Tutup' onClick={() => props.popupHandler(false)}/>
             </div>}
         </div>
     </div>

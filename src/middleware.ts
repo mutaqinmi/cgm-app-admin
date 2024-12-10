@@ -21,9 +21,13 @@ export async function middleware(req: NextRequest){
         });
         const { data } = response.data as { data: number };
 
-        if(data === 0 || data === undefined){    
+        if(data === 0 || data === undefined){
             // If the token is not found, redirect to the signin page
-            return NextResponse.redirect(new URL('/signin', req.url));
+            // return NextResponse.redirect(new URL('/signin', req.url));
+            if (!pathname.startsWith('/signin')) {
+                return NextResponse.redirect(new URL('/signin', req.url));
+            }
+            return NextResponse.next();
         }
         
         if (pathname.startsWith('/signin') && (data !== 0 || data !== undefined)){
