@@ -11,7 +11,6 @@ Cipta Graha Mandiri App or CGM App is a web application for Cipta Graha Mandiri 
 
 - Node JS v22.11.0 or higher
 - NPM v10.9.0 or higher
-- PostgreSQL 17
 
 ## Installation
 
