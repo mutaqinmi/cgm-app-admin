@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cipta Graha Mandiri App
+
+Cipta Graha Mandiri App or CGM App is a web application for Cipta Graha Mandiri residential. it used for check monthly fee for every resident and managed by administrator.
 
 ## Getting Started
 
-First, run the development server:
+### Requirements :
+
+> [!NOTE]
+> The current version needs manual software installation.
+
+- Node JS v22.11.0 or higher
+- NPM v10.9.0 or higher
+- PostgreSQL 17
+
+## Installation
+
+First, Clone [github repository](https://github.com/mutaqinmi/cgm-app-admin.git) using Git
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/mutaqinmi/cgm-app-admin.git && cd cgm-app-admin
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Install the dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm i
+# or
+pnpm i
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open .env.example file and rename it to **.env** and then edit the variable with your preferences.
 
-## Learn More
+> [!TIP]
+> .env Example
+>
+> `API_URL=https://your-api-url.com/api/v1` // your API url
 
-To learn more about Next.js, take a look at the following resources:
+And then, build the web app using following command
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+# or
+pnpm build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+> [!IMPORTANT]
+> Before continue to next step, make sure your API is active.
 
-## Deploy on Vercel
+And finally, start your application
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run start
+# or
+pnpm start
+```
