@@ -36,24 +36,14 @@ export default function SideBar(props: {className?: string; sidebarState: boolea
             </div>
             <div className="mt-4 p-4">
                 <ul>
-                    <li>
-                        <SideBarMenu icon={<ChartBar size={24}/>} label="Dashboard" active={props.navbarState === 0} onClick={() => {route.push('/dashboard'); props.sidebarController(false)}}/>
-                    </li>
-                    <li>
-                        <SideBarMenu icon={<HandCoins size={24}/>} label="Iuran" active={props.navbarState === 1} onClick={() => {route.push('/iuran'); props.sidebarController(false)}}/>
-                    </li>
-                    <li>
-                        <SideBarMenu icon={<Users size={24}/>} label="Warga" active={props.navbarState === 2} onClick={() => {route.push('/warga'); props.sidebarController(false)}}/>
-                    </li>
+                    <SideBarMenu icon={<ChartBar size={24}/>} label="Dashboard" active={props.navbarState === 0} onClick={() => {route.push('/dashboard'); props.sidebarController(false)}}/>
+                    <SideBarMenu icon={<HandCoins size={24}/>} label="Iuran" active={props.navbarState === 1} onClick={() => {route.push('/iuran'); props.sidebarController(false)}}/>
+                    <SideBarMenu icon={<Users size={24}/>} label="Warga" active={props.navbarState === 2} onClick={() => {route.push('/warga'); props.sidebarController(false)}}/>
                     <li>
                         <HorizontalDivider/>
                     </li>
-                    <li>
-                        <SideBarMenu icon={<Gear size={24}/>} label="Pengaturan" active={props.navbarState === 3} onClick={() => {route.push('/settings'); props.sidebarController(false)}}/>
-                    </li>
-                    <li>
-                        <SideBarMenu icon={<SignOut size={24}/>} label="Keluar" active={false} onClick={signoutController}/>
-                    </li>
+                    <SideBarMenu icon={<Gear size={24}/>} label="Pengaturan" active={props.navbarState === 3} onClick={() => {route.push('/settings'); props.sidebarController(false)}}/>
+                    <SideBarMenu icon={<SignOut size={24}/>} label="Keluar" active={false} onClick={signoutController}/>
                 </ul>
             </div>
         </div>

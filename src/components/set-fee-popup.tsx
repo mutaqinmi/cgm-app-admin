@@ -27,7 +27,7 @@ export default function SetFeePopup(props: {refresh?: () => void; popupHandler: 
             <div className="flex justify-between">
                 <div>
                     <span className="text-sm">Atur Iuran</span>
-                    <h1 className="font-semibold text-xl">{dateConvert.toString(`${new Date().getFullYear()}-${new Date().getMonth() + 1}`)}</h1>
+                    <h1 className="font-semibold text-xl">{dateConvert.toString(`${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}`)}</h1>
                 </div>
                 <X onClick={() => props.popupHandler(false)}/>
             </div>

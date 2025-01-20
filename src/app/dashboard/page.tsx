@@ -118,7 +118,7 @@ export default function Page() {
     const currentMonthFeeAPI = useCallback(async () => {
         setIsLoading(true);
 
-        const currentMonth = new Date().getMonth() + 1;
+        const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
         const currentYear = new Date().getFullYear();
 
         return await axios.get(`${process.env.API_URL}/admin/fees?month=${currentMonth}&year=${currentYear}`, { withCredentials: true })
@@ -291,7 +291,7 @@ export default function Page() {
                     <Card color="yellow" title="Menunggu Konfirmasi" total={totalPendingAmount} nominal={totalPendingAmount * component.currentMonthData[0].fees.fee_amount!} icon={<HandCoins/>}/>
                     <Card color="red" title="Belum Lunas" total={totalUndoneAmount} nominal={totalUndoneAmount * component.currentMonthData[0].fees.fee_amount!} icon={<HandCoins/>}/>
                 </div>
-            </> : <span className="w-full p-4 bg-red-200 text-red-500 border border-red-500 mt-4 rounded-lg block text-center">Iuran bulan {dateConvert.toString(`${new Date().getFullYear()}-${new Date().getMonth() + 1}`)} belum anda atur. <span className="underline cursor-pointer" onClick={() => component.setShowSetFeePopup(true)}>Atur sekarang</span></span> : null}
+            </> : <span className="w-full p-4 bg-red-200 text-red-500 border border-red-500 mt-4 rounded-lg block text-center">Iuran bulan {dateConvert.toString(`${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}`)} belum anda atur. <span className="underline cursor-pointer" onClick={() => component.setShowSetFeePopup(true)}>Atur sekarang</span></span> : null}
             <div className="mt-8 w-full grid grid-cols-1 md:grid-cols-5 gap-8">
                 <div className="col-span-1 md:col-span-3 flex flex-col gap-8">
                     <Container>
@@ -331,7 +331,7 @@ export default function Page() {
                     <Container>
                         <div className="flex justify-between items-center">
                             <h1 className="text-lg font-semibold">Rekapan Iuran Bulanan</h1>
-                            <input type="month" name="month" id="month" onChange={dateFilterHandler} className="bg-blue-500 text-white [&::-webkit-calendar-picker-indicator]:invert-[1] outline-none p-2 rounded-md [&::-webkit-datetime-edit]:text-sm" defaultValue={`${new Date().getFullYear()}-${new Date().getMonth() + 1}`}/>
+                            <input type="month" name="month" id="month" onChange={dateFilterHandler} className="bg-blue-500 text-white [&::-webkit-calendar-picker-indicator]:invert-[1] outline-none p-2 rounded-md [&::-webkit-datetime-edit]:text-sm" defaultValue={`${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}`}/>
                         </div>
                         <div className="mt-8 flex flex-col gap-4">
                             {component.feeList.length ? component.feeList.map((fee: schema.feesType) => {

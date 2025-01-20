@@ -70,7 +70,7 @@ function DetailWarga(){
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const month_inc = useRef(1);
     const currentDate = useRef({
-        month: new Date().getMonth() + 1,
+        month: (new Date().getMonth() + 1).toString().padStart(2, '0'),
         year: new Date().getFullYear(),
     })
 
@@ -263,7 +263,7 @@ function DetailWarga(){
 
     const resetDate = () => {
         currentDate.current = {
-            month: new Date().getMonth() + 1,
+            month: (new Date().getMonth() + 1).toString().padStart(2, '0'),
             year: new Date().getFullYear(),
         };
 
@@ -286,7 +286,7 @@ function DetailWarga(){
         
     return isLoading ? <LoadingAnimation/> : component.userData ? <NavigationBar sidebarIndex={2}>
         {!component.userData.length ? <div className="w-full h-screen flex flex-col gap-8 justify-center items-center text-center">
-            <span>Anda perlu mengatur Iuran bulan {dateConvert.toString(`${new Date().getFullYear()}-${new Date().getMonth() + 1}`)} dahulu untuk melihat data warga. <span className="cursor-pointer underline" onClick={() => route.push('/dashboard')}>Kembali ke Dashboard</span></span>
+            <span>Anda perlu mengatur Iuran bulan {dateConvert.toString(`${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}`)} dahulu untuk melihat data warga. <span className="cursor-pointer underline" onClick={() => route.push('/dashboard')}>Kembali ke Dashboard</span></span>
         </div> : <div className="mt-8 grid grid-cols-1 md:grid-cols-5 gap-8">
             <div className="col-span-1 md:col-span-3 flex flex-col gap-8">
                 <Container>
@@ -319,7 +319,7 @@ function DetailWarga(){
                 <Container>
                     <div className="flex justify-between items-center">
                         <h1 className="text-lg font-semibold">Riwayat Iuran</h1>
-                        <input type="month" className="[&::-webkit-datetime-edit]:text-sm [&::-webkit-calendar-picker-indicator]:invert-[1] p-2 bg-blue-500 rounded-md text-white outline-none" name="filter_fee_history" defaultValue={`${new Date().getFullYear()}-${new Date().getMonth() + 1}`} onChange={dateHistoryFilterHandler}/>
+                        <input type="month" className="[&::-webkit-datetime-edit]:text-sm [&::-webkit-calendar-picker-indicator]:invert-[1] p-2 bg-blue-500 rounded-md text-white outline-none" name="filter_fee_history" defaultValue={`${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}`} onChange={dateHistoryFilterHandler}/>
                     </div>
                     <div className="flex gap-2 my-4">
                         <ChoiceChip label="Semua" active={component.filterStatusIndex === 0} onClick={() => {component.setFilterStatusIndex(0); StatusFilteredDataHandler(component.userData[0].user_id, 'Semua')}}/>
