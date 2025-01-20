@@ -70,7 +70,7 @@ function DetailWarga(){
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const month_inc = useRef(1);
     const currentDate = useRef({
-        month: (new Date().getMonth() + 1).toString().padStart(2, '0'),
+        month: new Date().getMonth() + 1,
         year: new Date().getFullYear(),
     })
 
@@ -263,7 +263,7 @@ function DetailWarga(){
 
     const resetDate = () => {
         currentDate.current = {
-            month: (new Date().getMonth() + 1).toString().padStart(2, '0'),
+            month: new Date().getMonth() + 1,
             year: new Date().getFullYear(),
         };
 
